@@ -27,3 +27,6 @@ Route::middleware('auth:sanctum')->group(function () {
 // ga harus login dulu
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
+
+// API FOOD
+Route::get('food', [FoodController::class, 'all']);
