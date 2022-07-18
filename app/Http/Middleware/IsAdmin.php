@@ -19,7 +19,7 @@ class IsAdmin
     {
 
         // cek apakah user sudah login, dan apakah yg login itu rolesnya admin
-        if (Auth::user() && Auth::user()->roles == 'ADMIN') {
+        if (Auth::user() && Auth::user()->role == 'ADMIN') {
 
             // kalau iya, maka akan lanjutkan requestnya
             return $next($request);
