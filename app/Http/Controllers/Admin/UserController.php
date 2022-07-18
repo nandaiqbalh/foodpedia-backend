@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -29,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -38,9 +40,24 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $data = $request->all();
+
+        // store photopath
+        if ($request->file('profile_photo_path')) {
+
+            $photoPath = $request->file('profile_photo_path')->store('assets/user', 'public');
+            $data['profile_photo_path'] = $photoPath;
+        }
+
+        // store hashed password
+        $hashedPassword = Hash::make($request->password);
+        $data['password'] = $hashedPassword;
+
+        User::create($data);
+
+        return redirect()->route('users.index');
     }
 
     /**
