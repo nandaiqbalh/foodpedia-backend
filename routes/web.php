@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FoodController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\API\MidtransController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,9 @@ Route::prefix('dashboard')
 
         // food
         Route::resource('food', FoodController::class);
+
+        // transaction
+        Route::resource('transactions', TransactionController::class);
     });
 
 
