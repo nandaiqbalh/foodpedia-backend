@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FoodRequest;
 use App\Models\Food;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,7 @@ class FoodController extends Controller
      */
     public function create()
     {
-        //
+        return view('food.create');
     }
 
     /**
@@ -38,9 +39,19 @@ class FoodController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FoodRequest $request)
     {
-        //
+        $data = $request->all();
+
+        // store photopath
+        if ($request->file('picture_path')) {
+            $photoPath = $request->file('picture_path')->store('assets/food', 'public');
+            $data['picture_path'] = $photoPath;
+        }
+
+        Food::create($data);
+
+        return redirect()->route('food.index');
     }
 
     /**
