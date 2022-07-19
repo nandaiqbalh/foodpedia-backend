@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FoodRequest;
 use App\Models\Food;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class FoodController extends Controller
