@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FoodRequest;
 use App\Models\Food;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FoodController extends Controller
 {
@@ -71,9 +72,11 @@ class FoodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Food $food)
     {
-        //
+        return view('food.edit', [
+            'item' => $food
+        ]);
     }
 
     /**
@@ -83,11 +86,25 @@ class FoodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Food $food)
     {
-        //
-    }
+        $data = $request->all();
 
+        // apakah user memasukkan photo?
+        if ($request->file('picture_path')) {
+
+            // delete old photo
+            Storage::disk('public')->delete($food->picture_path);
+
+            // store new photopath
+            $photoPath = $request->file('picture_path')->store('assets/food', 'public');
+            $data['picture_path'] = $photoPath;
+        }
+
+        $food->update($data);
+
+        return redirect()->route('food.index');
+    }
     /**
      * Remove the specified resource from storage.
      *
